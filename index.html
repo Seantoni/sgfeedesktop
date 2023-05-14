@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimpleGo Fee Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <form id="inputForm">
+    <img src="https://i.postimg.cc/3N5PXrdZ/simple-Go-logo-final-trans.png" alt="Logo" id="logo">
+    <div class="form-group">
+      <label for="usuarioMes1">Usuarios mes 1:</label>
+      <input type="number" id="usuarioMes1" value="100" required>
+    </div>
+    <div class="form-group">
+      <label for="crecimiento">Crec. usuarios MoM (%):</label>
+      <input type="number" id="crecimiento" value="18" required>
+    </div>
+    <div class="form-group">
+      <label for="ticketPromedio">Ticket Promedio:</label>
+      <input type="number" id="ticketPromedio" required>
+    </div>
+    <div class="form-group">
+      <label for="feeSimpleGo">Fee SimpleGo (%):</label>
+      <input type="number" id="feeSimpleGo" value="15" required>
+    </div>
+    
+    <div class="button-container">
+        <button type="submit">Calcular</button>
+        <button id="downloadCSV">Descargar CSV</button>
+    </div>
+
+  </form>
+  <div class="container">
+    <canvas id="myChart" hidden width="1200" height="800"></canvas>
+
+    <table id="resultsTable" hidden>
+        <thead>
+        <tr>
+            <th>Mes</th>
+            <th>Usuarios</th>
+            <th>Ingreso Bruto</th>
+            <th>SimpleGo Fee</th>
+            <th>% Crecimiento</th>
+        </tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+    </table>
+
+    <div id="investmentResults" hidden>
+        <table>
+        <thead>
+            <tr>
+            <th>Period</th>
+            <th>Ingreso Bruto</th>
+            <th>Inversión</th>
+            </tr>
+        </thead>
+        <tbody id="investmentBody"></tbody>
+        </table>
+    </div>
+</div>
+  <script src="script.js"></script>
+</body>
+</html>

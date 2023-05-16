@@ -16,9 +16,9 @@ body {
 
 #logo {
     display: block;
-    height: 100px;
+    height: 80px;
     width: 100%;
-    margin: 0 0 10px 0;
+    margin: 0 0 20px 0;
     object-fit: contain;
 }
 
@@ -56,6 +56,7 @@ h1 {
 
 form {
     background-color: #fff;
+    width: 250px;
     padding: 32px;
     border-radius: 6px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -204,12 +205,6 @@ body:not(.sidebar-active) {
     overflow: auto;
     background-color: #fff;
     padding: 32px;
-}
-
-.button-container {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
 }
 
 .sidebar .button-container {

@@ -3,25 +3,19 @@ document.getElementById("inputForm").addEventListener("submit", function (event)
     calculateResults();
 });
 
-
-
-let myChart = null; // declare the chart variable outside the function
+let myChart = null;
 
 function createChart(results) {
     const ctx = document.getElementById('myChart').getContext('2d');
-
-    // destroy the previous chart if it exists
     if (myChart !== null) {
         myChart.destroy();
     }
-
     const labels = results.map(result => result.mes);
     const dataUsuarios = results.map(result => result.usuarios);
     const dataInversion = results.map(result => result.simpleGoFee);
     const dataIngresoBruto = results.map(result => result.ingresoBruto);
     const dataNuevoIngresoBruto = results.map(result => result.nuevoIngresoBruto);
 
-    // Create new chart
     myChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -70,8 +64,6 @@ function createChart(results) {
     document.getElementById("myChart").hidden = false;
 }
 
-
-
 function calculateResults() {
     const usuarioMes1 = parseInt(document.getElementById("usuarioMes1").value);
     let crecimiento = parseFloat(document.getElementById("crecimiento").value) / 100;
@@ -90,7 +82,6 @@ function calculateResults() {
         let nuevoIngresoBruto = Math.floor((usuarios*1.1) * ticketPromedio * 1.1);
         let simpleGoFee = Math.floor(nuevoIngresoBruto * feeSimpleGo);
 
-
         results.push({
             mes: i,
             usuarios: usuarios,
@@ -103,12 +94,11 @@ function calculateResults() {
 
     displayResults(results);
     displayInvestmentAndGrossIncome(results);
-    enableDownloadCSV(results);
     createChart(results);
 
     const form = document.getElementById("inputForm");
     form.classList.add("sidebar");
-    form.classList.add("active");  // Add the active class to slide the form in from the left
+    form.classList.add("active");
     document.getElementById("inputForm").classList.add("fixed-sidebar");
     document.body.classList.add('sidebar-active');
 }
@@ -143,17 +133,15 @@ function displayResults(results) {
         cellSimpleGoFee.textContent = `$${result.simpleGoFee.toLocaleString()}`;
         row.appendChild(cellSimpleGoFee);
 
-        let cellCrecimiento = document.createElement("td");
-        cellCrecimiento.textContent = `${result.crecimiento.toFixed(2)}%`;
-        row.appendChild(cellCrecimiento);
+        let cellCrecimientoPercent = document.createElement("td");
+        cellCrecimientoPercent.textContent = `${result.crecimiento.toFixed(2)}%`;
+        row.appendChild(cellCrecimientoPercent);
 
         resultsBody.appendChild(row);
     });
 
     document.getElementById("resultsTable").hidden = false;
 }
-
-
 
 function displayInvestmentAndGrossIncome(results) {
     let investment6Months = results.slice(0, 6).reduce((acc, result) => acc + result.simpleGoFee, 0);
@@ -192,27 +180,4 @@ function displayInvestmentAndGrossIncome(results) {
     });
 
     document.getElementById("investmentResults").hidden = false;
-}
-function enableDownloadCSV(results) {
-    const downloadCSVButton = document.getElementById("downloadCSV");
-    downloadCSVButton.hidden = false;
-    downloadCSVButton.onclick = () => downloadCSV(results);
-}
-
-function downloadCSV(results) {
-    let csvContent = "Mes,Usuarios,Ingreso Bruto,SimpleGo Fee\n";
-
-    results.forEach(result => {
-        csvContent += `${result.mes},${result.usuarios.toLocaleString()},$${result.ingresoBruto.toLocaleString()},$${result.simpleGoFee.toLocaleString()}\n`;
-    });
-
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "SimpleGo_Fee_Calculator.csv");
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
 }

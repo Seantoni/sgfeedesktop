@@ -19,6 +19,7 @@ function createChart(results) {
     const dataUsuarios = results.map(result => result.usuarios);
     const dataInversion = results.map(result => result.simpleGoFee);
     const dataIngresoBruto = results.map(result => result.ingresoBruto);
+    const dataNuevoIngresoBruto = results.map(result => result.nuevoIngresoBruto);
 
     // Create new chart
     myChart = new Chart(ctx, {
@@ -36,14 +37,23 @@ function createChart(results) {
                 fill: 'origin'
             },
             {
-                label: 'Ingreso Bruto',
+                label: 'Ingreso',
                 data: dataIngresoBruto,
                 backgroundColor: 'rgba(48, 209, 88, 0.2)',
                 borderColor: 'rgba(48, 209, 88, 1)',
                 borderWidth: 1,
                 type: 'line',
                 fill: 'origin'
-            },]
+            },
+            {
+                label: 'Ingreso SimpleGo',
+                data: dataNuevoIngresoBruto,
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1,
+                type: 'line',
+                fill: 'origin'
+            }]
         },
         options: {
             scales: {
@@ -61,6 +71,7 @@ function createChart(results) {
 }
 
 
+
 function calculateResults() {
     const usuarioMes1 = parseInt(document.getElementById("usuarioMes1").value);
     let crecimiento = parseFloat(document.getElementById("crecimiento").value) / 100;
@@ -76,14 +87,17 @@ function calculateResults() {
 
         let usuarios = Math.floor(usuarioMes1 * Math.pow(1 + crecimiento, i - 1));
         let ingresoBruto = Math.floor(usuarios * ticketPromedio);
-        let simpleGoFee = Math.floor(ingresoBruto * feeSimpleGo);
+        let nuevoIngresoBruto = Math.floor((usuarios*1.1) * ticketPromedio * 1.1);
+        let simpleGoFee = Math.floor(nuevoIngresoBruto * feeSimpleGo);
+
 
         results.push({
             mes: i,
             usuarios: usuarios,
             ingresoBruto: ingresoBruto,
+            nuevoIngresoBruto: nuevoIngresoBruto,
             simpleGoFee: simpleGoFee,
-            crecimiento: crecimiento
+            crecimiento: (crecimiento * 100)
         });
     }
 
@@ -109,25 +123,36 @@ function displayResults(results) {
     results.forEach(result => {
         let row = document.createElement("tr");
 
-        Object.values(result).forEach((value, index) => {
-            let cell = document.createElement("td");
+        let cellMes = document.createElement("td");
+        cellMes.textContent = result.mes;
+        row.appendChild(cellMes);
 
-            if (index === 2 || index === 3) {
-                cell.textContent = `$${value.toLocaleString()}`;
-            } else if (index === 4) {
-                cell.textContent = `${(value * 100).toFixed(2)}%`; // Format the value as a percentage
-            } else {
-                cell.textContent = value.toLocaleString();
-            }
+        let cellUsuarios = document.createElement("td");
+        cellUsuarios.textContent = result.usuarios.toLocaleString();
+        row.appendChild(cellUsuarios);
 
-            row.appendChild(cell);
-        });
+        let cellIngresoBruto = document.createElement("td");
+        cellIngresoBruto.textContent = `$${result.ingresoBruto.toLocaleString()}`;
+        row.appendChild(cellIngresoBruto);
+
+        let cellNuevoIngresoBruto = document.createElement("td");
+        cellNuevoIngresoBruto.textContent = `$${result.nuevoIngresoBruto.toLocaleString()}`;
+        row.appendChild(cellNuevoIngresoBruto);
+
+        let cellSimpleGoFee = document.createElement("td");
+        cellSimpleGoFee.textContent = `$${result.simpleGoFee.toLocaleString()}`;
+        row.appendChild(cellSimpleGoFee);
+
+        let cellCrecimiento = document.createElement("td");
+        cellCrecimiento.textContent = `${result.crecimiento.toFixed(2)}%`;
+        row.appendChild(cellCrecimiento);
 
         resultsBody.appendChild(row);
     });
 
     document.getElementById("resultsTable").hidden = false;
 }
+
 
 
 function displayInvestmentAndGrossIncome(results) {

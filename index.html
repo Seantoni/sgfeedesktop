@@ -6,6 +6,8 @@
   <title>SimpleGo Fee Calculator</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+
 </head>
 <body>
   <form id="inputForm">
@@ -29,7 +31,6 @@
     
     <div class="button-container">
         <button type="submit">Calcular</button>
-        <button id="downloadCSV">Descargar CSV</button>
     </div>
 
   </form>
@@ -49,7 +50,6 @@
     </thead>
         <tbody id="resultsBody"></tbody>
     </table>
-
     <div id="investmentResults" hidden>
         <table>
         <thead>

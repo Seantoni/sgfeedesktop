@@ -1,9 +1,23 @@
 document.getElementById("inputForm").addEventListener("submit", function (event) {
     event.preventDefault();
-    calculateResults();
-});
+    calculateResults(); // Only call calculateResults here, as the password check is handled elsewhere
+  });
+  
+  
 
 let myChart = null;
+
+function checkPassword() {
+    const passwordInput = document.getElementById("password").value;
+    const correctPassword = "ossg2023";
+  
+    if (passwordInput === correctPassword) {
+      document.getElementById("password-group").style.display = "none";
+      document.getElementById("inputForm").style.display = "block";
+    } else {
+      alert("¡Contraseña Incorrecta!");
+    }
+  }
 
 function createChart(results) {
     const ctx = document.getElementById('myChart').getContext('2d');
@@ -65,32 +79,38 @@ function createChart(results) {
 }
 
 function calculateResults() {
-    const usuarioMes1 = parseInt(document.getElementById("usuarioMes1").value);
-    let crecimiento = parseFloat(document.getElementById("crecimiento").value) / 100;
-    const feeSimpleGo = parseFloat(document.getElementById("feeSimpleGo").value) / 100;
-    const ticketPromedio = parseFloat(document.getElementById("ticketPromedio").value);
-
-    let results = [];
-
-    for (let i = 1; i <= 12; i++) {
+    const passwordInput = document.getElementById("password").value;
+    const correctPassword = "123"; // Replace with the correct password
+  
+    if (passwordInput === correctPassword) {
+      document.getElementById("password-group").style.display = "none";
+  
+      const usuarioMes1 = parseInt(document.getElementById("usuarioMes1").value);
+      let crecimiento = parseFloat(document.getElementById("crecimiento").value) / 100;
+      const feeSimpleGo = parseFloat(document.getElementById("feeSimpleGo").value) / 100;
+      const ticketPromedio = parseFloat(document.getElementById("ticketPromedio").value);
+  
+      let results = [];
+  
+      for (let i = 1; i <= 12; i++) {
         if (i > 6) {
-            crecimiento = crecimiento * (1 - 0.08) ; 
+          crecimiento = crecimiento * (1 - 0.08);
         }
-
+  
         let usuarios = Math.floor(usuarioMes1 * Math.pow(1 + crecimiento, i - 1));
         let ingresoBruto = Math.floor(usuarios * ticketPromedio);
-        let nuevoIngresoBruto = Math.floor((usuarios*1.1) * ticketPromedio * 1.1);
+        let nuevoIngresoBruto = Math.floor((usuarios * 1.1) * ticketPromedio * 1.1);
         let simpleGoFee = Math.floor(nuevoIngresoBruto * feeSimpleGo);
-
+  
         results.push({
-            mes: i,
-            usuarios: usuarios,
-            ingresoBruto: ingresoBruto,
-            nuevoIngresoBruto: nuevoIngresoBruto,
-            simpleGoFee: simpleGoFee,
-            crecimiento: (crecimiento * 100)
+          mes: i,
+          usuarios: usuarios,
+          ingresoBruto: ingresoBruto,
+          nuevoIngresoBruto: nuevoIngresoBruto,
+          simpleGoFee: simpleGoFee,
+          crecimiento: (crecimiento * 100)
         });
-    }
+      }
 
     displayResults(results);
     displayInvestmentAndGrossIncome(results);
@@ -101,6 +121,9 @@ function calculateResults() {
     form.classList.add("active");
     document.getElementById("inputForm").classList.add("fixed-sidebar");
     document.body.classList.add('sidebar-active');
+    } else {
+    alert("Incorrect password!");
+  }
 }
 
 function displayResults(results) {

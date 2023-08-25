@@ -54,7 +54,7 @@ function createChart(results) {
                 fill: 'origin'
             },
             {
-                label: 'Ingreso SimpleGo',
+                label: 'Ingreso por SG',
                 data: dataNuevoIngresoBruto,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgba(255, 159, 64, 1)',

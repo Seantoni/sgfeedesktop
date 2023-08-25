@@ -1,11 +1,6 @@
 document.getElementById("inputForm").addEventListener("submit", function (event) {
     event.preventDefault();
-    const password = document.getElementById("password").value;
-  if (password === OSSG2023) { // Replace "yourpassword" with the actual password
     calculateResults();
-  } else {
-    alert("Incorrect password!");
-  }
 });
 
 let myChart = null;

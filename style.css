@@ -91,7 +91,7 @@ input {
 }
 
 button {
-    background-color: #ff4200;
+    background-color: #ff4420;
     border: none;
     color: white;
     padding: 12px 24px;
@@ -209,4 +209,15 @@ body:not(.sidebar-active) {
 
 .sidebar .button-container {
     flex-direction: column;
+}
+
+#inputForm {
+    display: none;
+}
+
+#password-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1em;
 }

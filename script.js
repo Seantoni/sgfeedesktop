@@ -165,6 +165,11 @@ function displayInvestmentAndGrossIncome(results) {
     let grossIncome6Months = results.slice(0, 6).reduce((acc, result) => acc + result.ingresoBruto, 0);
     let grossIncome12Months = results.reduce((acc, result) => acc + result.ingresoBruto, 0);
 
+    let users6months = results.slice(0, 6).reduce((acc, result) => acc + result.usuarios, 0);
+    let users12months = results.reduce((acc, result) => acc + result.usuarios, 0);
+
+
+
     const investmentBody = document.getElementById("investmentBody");
 
     while (investmentBody.firstChild) {
@@ -174,25 +179,34 @@ function displayInvestmentAndGrossIncome(results) {
     const periodData = [
         {
             period: "Primeros 6 meses",
+            users: users6months,
             grossIncome: grossIncome6Months,
-            investment: investment6Months
+            investment: investment6Months,
+            
         },
         {
             period: "Primeros 12 meses",
+            users: users12months,
             grossIncome: grossIncome12Months,
             investment: investment12Months,
         }
+        
     ];
 
     periodData.forEach(data => {
         let row = document.createElement("tr");
-        Object.values(data).forEach(value => {
+        Object.keys(data).forEach(key => {
             let cell = document.createElement("td");
-            cell.textContent = typeof value === "number" ? `$${value.toLocaleString()}` : value;
+            let value = data[key];
+            if (key !== "users" && typeof value === "number") {
+                cell.textContent = `$${value.toLocaleString()}`;
+            } else {
+                cell.textContent = value.toLocaleString();
+            }
             row.appendChild(cell);
         });
         investmentBody.appendChild(row);
-    });
+    });    
 
     document.getElementById("investmentResults").hidden = false;
 }

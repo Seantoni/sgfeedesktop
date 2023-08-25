@@ -9,7 +9,7 @@ let myChart = null;
 
 function checkPassword() {
     const passwordInput = document.getElementById("password").value;
-    const correctPassword = "ossg2023";
+    const correctPassword = "sg2023";
   
     if (passwordInput === correctPassword) {
       document.getElementById("password-group").style.display = "none";
@@ -79,12 +79,7 @@ function createChart(results) {
 }
 
 function calculateResults() {
-    const passwordInput = document.getElementById("password").value;
-    const correctPassword = "123"; // Replace with the correct password
-  
-    if (passwordInput === correctPassword) {
-      document.getElementById("password-group").style.display = "none";
-  
+
       const usuarioMes1 = parseInt(document.getElementById("usuarioMes1").value);
       let crecimiento = parseFloat(document.getElementById("crecimiento").value) / 100;
       const feeSimpleGo = parseFloat(document.getElementById("feeSimpleGo").value) / 100;
@@ -121,9 +116,6 @@ function calculateResults() {
     form.classList.add("active");
     document.getElementById("inputForm").classList.add("fixed-sidebar");
     document.body.classList.add('sidebar-active');
-    } else {
-    alert("Incorrect password!");
-  }
 }
 
 function displayResults(results) {

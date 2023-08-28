@@ -28,11 +28,19 @@
         <input type="number" id="crecimiento" value="18" required>
       </div>
       <div class="form-group">
+        <label for="crecimiento usuarios">Crec. transacciones (%):</label>
+        <input type="number" id="crecimiento usuarios" value="10" required>
+      </div>
+      <div class="form-group">
+        <label for="crecimiento ticket">Crec. ticket promedio (%):</label>
+        <input type="number" id="crecimiento ticket" value="10" required>
+      </div>
+      <div class="form-group">
         <label for="ticketPromedio">Ticket Promedio:</label>
         <input type="number" id="ticketPromedio" required>
       </div>
       <div class="form-group">
-        <label for="feeSimpleGo">Fee (%):</label>
+        <label for="feeSimpleGo">Fee SimpleGo (%):</label>
         <input type="number" id="feeSimpleGo" value="15" required>
       </div>
       
@@ -43,34 +51,42 @@
   </div>
 
   <div class="container">
-    <canvas id="myChart" hidden width="1200" height="800"></canvas>
+    <div id="investmentResults" hidden> 
+      <h1>Proyección 6-12 meses al 10% de incremento</h1>
+      <table>
+        <thead>
+            <tr>
+            <th>Periodo</th>
+            <th>Usuarios</th>
+            <th>Ingreso SG</th>
+            <th>Nuevo Ingreso</th>
+            <th>Fee SG</th>
+            <th>Inversión</th>
+            </tr>
+        </thead>
+        <tbody id="investmentBody"></tbody>
+        </table>
+   
+    
+        <h1>Detalle MoM</h1>
+    </div>
     <table id="resultsTable" hidden>
       <thead>
         <tr>
             <th>Mes</th>
             <th>Usuarios</th>
             <th>Ingreso</th>
-            <th>Ingreso por SG</th>
-            <th>Fee</th>
+            <th>Ingreso SG</th>
+            <th>SimpleGo Fee</th>
             <th>% Crecimiento</th>
         </tr>
     </thead>
+    <canvas id="myChart" hidden width="800" height="400"></canvas>
         <tbody id="resultsBody"></tbody>
+        
     </table>
-    <div id="investmentResults" hidden>
-        <table>
-        <thead>
-            <tr>
-            <th>Periodo</th>
-            <th>Usuarios</th>
-            <th>Ingreso Bruto</th>
-            <th>Inversión</th>
-            </tr>
-        </thead>
-        <tbody id="investmentBody"></tbody>
-        </table>
-    </div>
   </div>
   <script src="script.js"></script>
 </body>
 </html>
+

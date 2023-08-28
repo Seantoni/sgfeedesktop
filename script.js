@@ -54,7 +54,7 @@ function createChart(results) {
                 fill: 'origin'
             },
             {
-                label: 'Ingreso por SG',
+                label: 'Ingreso SimpleGo',
                 data: dataNuevoIngresoBruto,
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgba(255, 159, 64, 1)',
@@ -84,6 +84,8 @@ function calculateResults() {
       let crecimiento = parseFloat(document.getElementById("crecimiento").value) / 100;
       const feeSimpleGo = parseFloat(document.getElementById("feeSimpleGo").value) / 100;
       const ticketPromedio = parseFloat(document.getElementById("ticketPromedio").value);
+      const crecimientousuarios = parseFloat(document.getElementById("crecimiento usuarios").value) / 100;
+      const crecimientoticket = parseFloat(document.getElementById("crecimiento ticket").value) / 100;
   
       let results = [];
   
@@ -94,8 +96,20 @@ function calculateResults() {
   
         let usuarios = Math.floor(usuarioMes1 * Math.pow(1 + crecimiento, i - 1));
         let ingresoBruto = Math.floor(usuarios * ticketPromedio);
-        let nuevoIngresoBruto = Math.floor((usuarios * 1.1) * ticketPromedio * 1.1);
+        let nuevoIngresoBruto = Math.floor((usuarios * (1 +crecimientousuarios) * ticketPromedio * (1 +crecimientoticket)));
         let simpleGoFee = Math.floor(nuevoIngresoBruto * feeSimpleGo);
+
+        let sixMonthsData = results.slice(0, 6);
+        let twelveMonthsData = results;
+      
+        let ingresoSixMonths = sixMonthsData.reduce((acc, val) => acc + val.ingresoBruto, 0);
+        let ingresoSimpleGoSixMonths = sixMonthsData.reduce((acc, val) => acc + val.nuevoIngresoBruto, 0);
+        let gananciaSixMonths = ingresoSimpleGoSixMonths - ingresoSixMonths;
+      
+        let ingresoTwelveMonths = twelveMonthsData.reduce((acc, val) => acc + val.ingresoBruto, 0);
+        let ingresoSimpleGoTwelveMonths = twelveMonthsData.reduce((acc, val) => acc + val.nuevoIngresoBruto, 0);
+        let gananciaTwelveMonths = ingresoSimpleGoTwelveMonths - ingresoTwelveMonths;
+        
   
         results.push({
           mes: i,
@@ -168,9 +182,20 @@ function displayInvestmentAndGrossIncome(results) {
     let users6months = results.slice(0, 6).reduce((acc, result) => acc + result.usuarios, 0);
     let users12months = results.reduce((acc, result) => acc + result.usuarios, 0);
 
+    let ingresosg6months = results.slice(0, 6).reduce((acc, result) => acc + result.nuevoIngresoBruto, 0);
+    let ingresosg12months = results.reduce((acc, result) => acc + result.nuevoIngresoBruto, 0);
+
+    let ganancia6monthts = ingresosg6months - grossIncome6Months;
+    let ganancia12monthts = ingresosg12months - grossIncome12Months
+    
+    let inversion6months = investment6Months - ganancia6monthts;
+    
+    let inversion12months = investment12Months - ganancia12monthts;
 
 
     const investmentBody = document.getElementById("investmentBody");
+    
+
 
     while (investmentBody.firstChild) {
         investmentBody.removeChild(investmentBody.firstChild);
@@ -178,17 +203,23 @@ function displayInvestmentAndGrossIncome(results) {
 
     const periodData = [
         {
-            period: "Primeros 6 meses",
+            period: "6 Meses",
             users: users6months,
-            grossIncome: grossIncome6Months,
-            investment: investment6Months,
+            ingresosg: ingresosg6months,
+            nuevoingreso: ganancia6monthts,
+            investmentsg: investment6Months,
+            // HIDDEN //grossIncome: grossIncome6Months,
+            investment: inversion6months,
             
         },
         {
-            period: "Primeros 12 meses",
+            period: "12 Meses",
             users: users12months,
-            grossIncome: grossIncome12Months,
-            investment: investment12Months,
+            ingresosg: ingresosg12months,
+            nuevoingreso: ganancia12monthts,
+            investmentsg: investment12Months,
+            // HIDDEN //grossIncome: grossIncome12Months,
+            investment: inversion12months,
         }
         
     ];
@@ -198,6 +229,11 @@ function displayInvestmentAndGrossIncome(results) {
         Object.keys(data).forEach(key => {
             let cell = document.createElement("td");
             let value = data[key];
+            if (key === "investment" && value < 0) {
+                // Style the cell if the key matches "investment" and value is negative
+                cell.style.backgroundColor = "green";
+                cell.style.color = "white";
+            }
             if (key !== "users" && typeof value === "number") {
                 cell.textContent = `$${value.toLocaleString()}`;
             } else {
@@ -206,7 +242,15 @@ function displayInvestmentAndGrossIncome(results) {
             row.appendChild(cell);
         });
         investmentBody.appendChild(row);
-    });    
+    });
 
     document.getElementById("investmentResults").hidden = false;
+
+    
 }
+$(document).ready(function() {
+    if ($(window).width() <= 768) {
+      $('.sidebar').remove();
+    }
+  });
+
